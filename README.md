@@ -1,6 +1,6 @@
 # karate-benefits-framework
 
-Karate framework covering: a mock benefits/disability API, REST test suites, Kafka
+Karate framework covering: a mock API, REST test suites, Kafka
 event-driven testing, and DB validation, all runnable locally with one Maven command.
 
 ## What's hosted, and by what
