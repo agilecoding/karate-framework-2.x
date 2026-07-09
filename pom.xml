@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.example.benefits</groupId>
-  <artifactId>karate-benefits-framework</artifactId>
+  <artifactId>karate-framework-2.x</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
-  <name>karate-benefits-framework</name>
+  <name>karate-framework-2.x</name>
   <description>Karate SDET framework: mock benefits/disability APIs, Kafka event validation, DB validation</description>
 
   <properties>

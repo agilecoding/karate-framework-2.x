@@ -1,4 +1,4 @@
-# karate-benefits-framework
+# karate-framework-2.x
 
 Karate framework covering: a mock API, REST test suites, Kafka
 event-driven testing, and DB validation, all runnable locally with one Maven command.
@@ -43,7 +43,7 @@ event-driven testing, and DB validation, all runnable locally with one Maven com
 ## Project layout
 
 ```
-karate-benefits-framework/
+karate-framework-2.x/
 ├── pom.xml
 ├── docker-compose.yml
 ├── data/init.sql                          # Postgres seed data

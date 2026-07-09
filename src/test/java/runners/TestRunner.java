@@ -66,7 +66,7 @@ class TestRunner {
         if (jsonPaths.isEmpty()) {
             return;
         }
-        Configuration config = new Configuration(new File("target"), "karate-benefits-framework");
+        Configuration config = new Configuration(new File("target"), "karate-framework-2.x");
         ReportBuilder reportBuilder = new ReportBuilder(jsonPaths, config);
         reportBuilder.generateReports();
     }

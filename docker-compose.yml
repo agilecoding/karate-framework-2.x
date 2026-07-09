@@ -6,6 +6,10 @@
 # docker.io directly - in this sandbox, Docker Hub's own CDN (production.cloudfront.docker.com)
 # fails mid-download (httpReadSeeker EOF) for every image, including official ones, while the
 # mirror serves the identical content without issue.
+#
+# Explicit project name below so container names stay "karate-framework-2.x-*" regardless of
+# the checkout directory's actual name (Compose otherwise derives it from the folder basename).
+name: karate-framework-2.x
 
 services:
   zookeeper:
