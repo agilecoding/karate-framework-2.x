@@ -1,0 +1,41 @@
+# Local infra for the parts the Karate mock/tests depend on that Karate itself doesn't host:
+# a real Kafka broker and a real Postgres instance. The mock API (benefits-mock.feature) is
+# started in-process by TestRunner / MockServerRunner - it is NOT a container.
+#
+# Images are pulled via mirror.gcr.io (Google's public Docker Hub mirror) rather than
+# docker.io directly - in this sandbox, Docker Hub's own CDN (production.cloudfront.docker.com)
+# fails mid-download (httpReadSeeker EOF) for every image, including official ones, while the
+# mirror serves the identical content without issue.
+
+services:
+  zookeeper:
+    image: mirror.gcr.io/confluentinc/cp-zookeeper:7.6.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: mirror.gcr.io/confluentinc/cp-kafka:7.6.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  postgres:
+    image: mirror.gcr.io/library/postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: benefits
+      POSTGRES_USER: benefits_user
+      POSTGRES_PASSWORD: benefits_pass
+    volumes:
+      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql

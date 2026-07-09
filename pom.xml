@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example.benefits</groupId>
+  <artifactId>karate-benefits-framework</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+  <name>karate-benefits-framework</name>
+  <description>Karate SDET framework: mock benefits/disability APIs, Kafka event validation, DB validation</description>
+
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <karate.version>2.0.10</karate.version>
+    <junit.version>6.1.0</junit.version>
+  </properties>
+
+  <dependencies>
+    <!-- Karate + JUnit runner (includes karate-core, json-path, gherkin parsing, HTML/JSON reports).
+         Karate moved from com.intuit.karate/Intuit to io.karatelabs/Karate Labs starting with 2.x;
+         karate-junit5 was retired in favor of karate-junit6, which targets junit-jupiter 6.x. -->
+    <dependency>
+      <groupId>io.karatelabs</groupId>
+      <artifactId>karate-junit6</artifactId>
+      <version>${karate.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- karate-junit6 declares junit-jupiter-api as "provided", so the actual JUnit Jupiter
+         engine + platform launcher (needed by surefire to discover/run tests) must be supplied here. -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <version>6.1.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Kafka producer/consumer clients used by mock + Kafka test features via Java interop -->
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+      <version>3.7.0</version>
+    </dependency>
+
+    <!-- Postgres JDBC driver for DbHelper -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.7.3</version>
+    </dependency>
+
+    <!-- IBM DB2 JDBC driver for DbHelper. Pull from your internal/IBM repo if Maven Central is blocked
+         in your environment; some orgs mirror this artifact internally. -->
+    <dependency>
+      <groupId>com.ibm.db2</groupId>
+      <artifactId>jcc</artifactId>
+      <version>11.5.9.0</version>
+    </dependency>
+
+    <!-- Generates classic Cucumber-style HTML reports from Karate's cucumber-format JSON output,
+         in addition to Karate's own built-in HTML report (target/karate-reports). -->
+    <dependency>
+      <groupId>net.masterthought</groupId>
+      <artifactId>cucumber-reporting</artifactId>
+      <version>5.8.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- Karate convention: .feature files and *.js config live next to the Java sources under
+         src/test/java and are picked up on the test classpath as resources. -->
+    <testResources>
+      <testResource>
+        <directory>src/test/java</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.6</version>
+        <configuration>
+          <includes>
+            <include>**/TestRunner.java</include>
+          </includes>
+          <systemPropertyVariables>
+            <karate.env>${karate.env}</karate.env>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
