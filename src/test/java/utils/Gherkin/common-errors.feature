@@ -1,4 +1,5 @@
 Feature: Reusable function to verify API error codes
+#This function takes a map of arguments and dynamically executes the call.
 
 Scenario: verify error code
   # Required arguments:

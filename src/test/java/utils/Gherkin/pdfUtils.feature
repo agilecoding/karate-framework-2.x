@@ -247,3 +247,16 @@ Then status 200
 
 # Validate that the response is a PDF
 * assert isPdf(response)
+
+# function isPdf(responseBytes) {
+#   var StringClass = Java.type('java.lang.String');
+#   var decoded = new StringClass(responseBytes, 'ISO-8859-1');
+#   return decoded.startsWith('%PDF-');
+# }
+
+# Load the JS file
+* def utils = js.read('classpath:utils/utils.js')
+
+# Call the isPdf function with response byte array
+* def isValid = utils.isPdf(response)
+* assert isValid
